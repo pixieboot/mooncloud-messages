@@ -22,8 +22,6 @@ If you want to check out the site and test things, simply make a new profile or 
 | -------- | ----- | -------- |
 | Jane | jane@mail.com | Jane123! |
 | John | john@mail.com | John123! |
-| Alex | alex@yahoo.com | Alex123! |
-| Chimken | chiccen@mail.com | Chiccen123! |
 
 > Be aware that given user credentials above might've been changed by someone during testing and they no longer apply as they were written here
 
@@ -60,7 +58,7 @@ npm run start
 - When user adds another user and initiates a chat, the other user doesn't get a chat section popout, page needs to be manually refreshed
 - Message notification counter doesn't work as intended
 - Notifications info about empty list pops out when there are multiple requests after a user is accepted as a friend
-- Eemoved users might still be disaplyed in friend list
+- Removed users might still be disaplyed in friend list
 
 ## Future ideas and plans
 - Integration of forgot password system
