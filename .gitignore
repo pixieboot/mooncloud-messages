@@ -5,3 +5,4 @@ node_modules
 *.rdb
 __tests__
 /__tests__
+logger.ts
