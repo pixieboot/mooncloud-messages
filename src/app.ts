@@ -1,6 +1,6 @@
 import "dotenv/config";
 import "ejs";
-import fs from "fs";
+// import fs from "fs";
 import express, { Application, Request, Response, NextFunction } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -49,9 +49,6 @@ declare module "http" {
     }
 }
 
-// Initial db connection on app start
-Database._connect();
-
 // Redis connection on app start
 // RedisClient._connect();
 
@@ -67,6 +64,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "/public")));
 app.use("**/assets", express.static(path.join(__dirname, "/public/assets")));
 app.use("**/utils", express.static(path.join(__dirname, "/public/utils")));
+app.use(flash());
+app.use(methodOverride("_method"));
+app.use(morgan("dev"));
 
 if (!`${process.env.SECRET_KEY}`) {
     console.error("env SECRET_KEY not defined");
@@ -104,15 +104,6 @@ app.use(expressSessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Display messages during authentication responses
-app.use(flash());
-
-// Method override
-app.use(methodOverride("_method"));
-
-// Morgan HTTP logger
-app.use(morgan("dev"));
-
 // Index routing
 app.use("/", indexRouter);
 
@@ -138,24 +129,23 @@ Database._connect().then(() => startServer()).catch((err) => {
 
 // Start the server if db connection is established
 function startServer() {
+    const port = normalizePort(`${process.env.PORT}` || '3000');
+    const domain = `${process.env.SERVER}` || '0.0.0.0';
+    const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
-    const debug = debugLib("node_app:server");
-
-    var port = normalizePort(`${process.env.PORT}` || '3000');
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
-    app.set("port", port);
-
-    var server = http.createServer(app);
-    var domain = `${process.env.SERVER}` || '0.0.0.0';
-    var admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
+    const server = http.createServer(app);
+    
     const io = new Server(server, {
         cors: {
             origin: [domain, admin_url],
             credentials: true
         },
     });
+
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+    app.set("port", port);
 
     io.engine.use(expressSessionMiddleware);
 
