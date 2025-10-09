@@ -7,7 +7,7 @@
   "author": "ND",
   "license": "ISC",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "nodemon dist/app.js",
     "dev": "nodemon src/app.ts",
     "build": "npm-run-all clean && tsc -p . && bash ./scripts/copyDir.script.sh",
     "clean": "rimraf dist",
