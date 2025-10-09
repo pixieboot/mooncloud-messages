@@ -105,7 +105,7 @@ mongoose.connection.once("open", () => {
 
     app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
         res.locals.message = err.message;
-        res.locals.error = req.app.get("env") === "development" ? err : {};
+        res.locals.error = req.app.get("env") === "production" ? err : {};
 
         res.status(err.status || 500);
         res.render("error");
@@ -113,11 +113,11 @@ mongoose.connection.once("open", () => {
 
     const debug = debugLib("node_app:server");
 
-    var port = normalizePort(`${process.env.PORT}` || "0.0.0.0");
+    var port = normalizePort(`${process.env.PORT}`);
     app.set("port", port);
 
     var server = http.createServer(app);
-    var domain = `${process.env.SERVER}` || "0.0.0.0";
+    var domain = `${process.env.SERVER}`;
     var admin_url = `${process.env.SOCKET_IO_ADMIN_URL}`;
     const io = new Server(server, {
         cors: {
