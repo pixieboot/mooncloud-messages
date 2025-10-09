@@ -113,7 +113,7 @@ mongoose.connection.once("open", () => {
 
     const debug = debugLib("node_app:server");
 
-    var port = normalizePort(process.env.PORT || "3000");
+    var port = normalizePort(`${process.env.PORT}` || "0.0.0.0");
     app.set("port", port);
 
     var server = http.createServer(app);
@@ -496,7 +496,7 @@ mongoose.connection.once("open", () => {
         })
     })
 
-    server.listen(port, "0.0.0.0", () => logger.info("Server running on port: " + port));
+    server.listen(port, domain, () => logger.info("Server running on port: " + port));
     server.on("error", onError);
     server.on("listening", onListening);
 
