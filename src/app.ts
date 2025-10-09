@@ -133,6 +133,8 @@ function startServer() {
     const domain = `${process.env.SERVER}` || '0.0.0.0';
     const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
+    console.log("Starting server setup…");
+
     const server = http.createServer(app);
     
     const io = new Server(server, {
@@ -142,10 +144,10 @@ function startServer() {
         },
     });
 
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
+    app.listen(port, domain, () => {
+        console.log(`Server running on port ${domain}:${port}`);
     });
-    app.set("port", port);
+    // app.set("port", port);
 
     io.engine.use(expressSessionMiddleware);
 
