@@ -7,9 +7,11 @@
   "author": "ND",
   "license": "ISC",
   "scripts": {
-    "start": "node src/app.ts",
+    "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "clean": "rimraf dist"
+    "build": "npm-run-all clean && tsc -p . && bash ./scripts/copyDir.script.sh",
+    "clean": "rimraf dist",
+    "test": "jest"
   },
   "dependencies": {
     "@socket.io/admin-ui": "^0.5.1",
