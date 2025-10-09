@@ -116,29 +116,40 @@ app.use(morgan("dev"));
 // Index routing
 app.use("/", indexRouter);
 
+// 404 handler
+app.use(function (req: Request, res: Response, next: NextFunction) {
+    next(createError(404));
+});
+
+// Error handler
+app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
+
+    res.status(err.status || 500);
+    res.render("error");
+});
+
+// Start Server after db connection
+Database._connect().then(() => startServer()).catch((err) => {
+    console.error("Failed to connect to DB:", err);
+    process.exit(1);
+});
+
 // Start the server if db connection is established
-mongoose.connection.once("open", () => {
-    // Server configs
-    app.use(function (req: Request, res: Response, next: NextFunction) {
-        next(createError(404));
-    });
-
-    app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
-        res.locals.message = err.message;
-        res.locals.error = req.app.get("env") === "production" ? err : {};
-
-        res.status(err.status || 500);
-        res.render("error");
-    });
+function startServer() {
 
     const debug = debugLib("node_app:server");
 
     var port = normalizePort(`${process.env.PORT}` || '3000');
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
     app.set("port", port);
 
     var server = http.createServer(app);
     var domain = `${process.env.SERVER}` || '0.0.0.0';
-    var admin_url = `${process.env.SOCKET_IO_ADMIN_URL}`;
+    var admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
     const io = new Server(server, {
         cors: {
             origin: [domain, admin_url],
@@ -148,13 +159,14 @@ mongoose.connection.once("open", () => {
 
     io.engine.use(expressSessionMiddleware);
 
-    instrument(io, { auth: false });
-
     io.use((socket, next) => {
         expressSessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
     });
 
+    instrument(io, { auth: false });
+
     io.use(async (socket, next) => {
+        logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
         if (sessionID) {
             try {
@@ -163,7 +175,7 @@ mongoose.connection.once("open", () => {
                 })
                 if (result) {
                     let session = result.session;
-                    let parsedSession = JSON.parse(session);
+                    let parsedSession = JSON.parse(session) || "";
                     let userID = parsedSession.passport.user;
                     const user = await localUserModel.findOne({
                         _id: userID,
@@ -177,7 +189,7 @@ mongoose.connection.once("open", () => {
                     else throw new Error("No user found during SocketIO session search");
                 }
             } catch (err: any) {
-                console.error(err);
+                console.error("Socket session fetch error:", err);
                 return undefined;
             }
         } else throw new Error("No sessionID found");
@@ -522,22 +534,11 @@ mongoose.connection.once("open", () => {
 
     function normalizePort(val: any) {
         var port = parseInt(val, 10);
-
-        if (isNaN(port)) {
-            return val;
-        }
-
-        if (port >= 0) {
-            return port;
-        }
-
-        return false;
+        return isNaN(port) ? val : port >= 0 ? port : false
     }
 
     function onError(error: any) {
-        if (error.syscall !== "listen") {
-            throw error;
-        }
+        if (error.syscall !== "listen") throw error;
 
         var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
@@ -545,11 +546,9 @@ mongoose.connection.once("open", () => {
             case "EACCES":
                 console.error(bind + " requires elevated privileges");
                 process.exit(1);
-                break;
             case "EADDRINUSE":
                 console.error(bind + " is already in use");
                 process.exit(1);
-                break;
             default:
                 throw error;
         }
@@ -558,10 +557,10 @@ mongoose.connection.once("open", () => {
     function onListening() {
         var addr = server.address();
         var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr!.port;
-        debug("Listening on " + bind);
+        debugLib("node_app:server")("Listening on " + bind);
     }
 
-});
+};
 
 // Global error catchers
 process.on('unhandledRejection', (reason, p) => {
