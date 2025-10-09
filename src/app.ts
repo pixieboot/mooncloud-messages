@@ -68,14 +68,34 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use("**/assets", express.static(path.join(__dirname, "/public/assets")));
 app.use("**/utils", express.static(path.join(__dirname, "/public/utils")));
 
+if (!`${process.env.SECRET_KEY}`) {
+    console.error("env SECRET_KEY not defined");
+    process.exit(1);
+}
+if (!`${process.env.MONGO_URI}`) {
+    console.error("env MONGO_URI not defined");
+    process.exit(1);
+}
+if (!`${process.env.MONGO_DB_NAME}`) {
+    console.error("env MONGO_DB_NAME not defined");
+    process.exit(1);
+}
+
+// Try connecting the session store 
+let sessionStore;
+try {
+    sessionStore = mongoStore.create({ mongoUrl: `${process.env.MONGO_URI}` });
+    console.log("Session store created");
+} catch (err) {
+    console.error("Error creating session store:", err);
+}
+
 // Session config
 let expressSessionMiddleware = expressSession({
     secret: `${process.env.SECRET_KEY}`,
     saveUninitialized: false,
     resave: false,
-    store: mongoStore.create({
-        mongoUrl: `${process.env.MONGO_URI}`,
-    }),
+    store: sessionStore
 })
 
 app.use(expressSessionMiddleware);
@@ -113,11 +133,11 @@ mongoose.connection.once("open", () => {
 
     const debug = debugLib("node_app:server");
 
-    var port = normalizePort(`${process.env.PORT}`);
+    var port = normalizePort(`${process.env.PORT}` || '3000');
     app.set("port", port);
 
     var server = http.createServer(app);
-    var domain = `${process.env.SERVER}`;
+    var domain = `${process.env.SERVER}` || '0.0.0.0';
     var admin_url = `${process.env.SOCKET_IO_ADMIN_URL}`;
     const io = new Server(server, {
         cors: {
@@ -541,6 +561,15 @@ mongoose.connection.once("open", () => {
         debug("Listening on " + bind);
     }
 
+});
+
+// Global error catchers
+process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at Promise', p, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception thrown', err);
+    process.exit(1);
 });
 
 // Close all connections if the app is exited
