@@ -18,7 +18,7 @@ import "./strategies/local.strategy";
 import "./strategies/discord.strategy";
 import mongoStore from "connect-mongo";
 import { Database } from "./database/mongodb.database";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import flash from "express-flash";
 import methodOverride from "method-override";
 // import "redis";
@@ -71,15 +71,15 @@ app.use(morgan("dev"));
 if (!`${process.env.SECRET_KEY}`) {
     console.error("env SECRET_KEY not defined");
     process.exit(1);
-}
+} else console.log("env SECRET_KEY found");
 if (!`${process.env.MONGO_URI}`) {
     console.error("env MONGO_URI not defined");
     process.exit(1);
-}
+} else console.log("env MONGO_URI found");
 if (!`${process.env.MONGO_DB_NAME}`) {
     console.error("env MONGO_DB_NAME not defined");
     process.exit(1);
-}
+} else console.log("env MONGO_DB_NAME found");
 
 // Try connecting the session store 
 let sessionStore;
@@ -98,19 +98,27 @@ let expressSessionMiddleware = expressSession({
     store: sessionStore
 })
 
+console.log("expressSessionMiddleware variable set");
+
 app.use(expressSessionMiddleware);
+
+console.log("expressSessionMiddleware app use set");
 
 // Passport config
 app.use(passport.initialize());
+console.log("passport initialized");
 app.use(passport.session());
+console.log("passport session set");
 
 // Index routing
 app.use("/", indexRouter);
+console.log("idex / routing set");
 
 // 404 handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
     next(createError(404));
 });
+console.log("404 handler set")
 
 // Error handler
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
@@ -120,24 +128,31 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
     res.status(err.status || 500);
     res.render("error");
 });
+console.log("error handler set");
 
 // Start Server after db connection
 Database._connect().then(() => startServer()).catch((err) => {
     console.error("Failed to connect to DB:", err);
     process.exit(1);
 });
+console.log("database connected");
 
 // Start the server if db connection is established
 function startServer() {
     const port = normalizePort(`${process.env.PORT}` || '8080');
+    console.log("port set to:", port);
     // const port = normalizePort(`${process.env.PORT}` || '3000');
     const domain = '0.0.0.0';
+    console.log("domain set to:", domain);
     // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
+
+    app.set("port", port);
+    console.log("port set");
 
     console.log("Starting server setup…");
 
     const server = http.createServer(app);
-    
+
     const io = new Server(server, {
         cors: {
             origin: ["*"],
@@ -146,8 +161,6 @@ function startServer() {
     });
 
     console.log(`Server running on port ${domain}:${port}`);
-
-    app.set("port", port);
 
     io.engine.use(expressSessionMiddleware);
 
