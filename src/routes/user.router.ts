@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkIsAuthenticated } from "../controllers/auth.controller";
+import { checkIsAuthenticated } from "../controllers/auth.controller.js";
 var router = Router();
 
 router.get("/:id", checkIsAuthenticated, async (req, res) => {
