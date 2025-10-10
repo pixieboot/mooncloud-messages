@@ -1,1 +1,0 @@
-{"version":3,"file":"babel.config.js","sourceRoot":"","sources":["../src/babel.config.js"],"names":[],"mappings":";AAAA,MAAM,CAAC,OAAO,GAAG;IACf,OAAO,EAAE;QACP,CAAC,mBAAmB,EAAE,EAAE,OAAO,EAAE,EAAE,IAAI,EAAE,SAAS,EAAE,EAAE,CAAC;QACvD,0BAA0B;KAC3B;CACF,CAAC"}
