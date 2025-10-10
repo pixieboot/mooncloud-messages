@@ -130,8 +130,9 @@ Database._connect().then(() => startServer()).catch((err) => {
 // Start the server if db connection is established
 function startServer() {
     const port = normalizePort(`${process.env.PORT}` || '8080');
-    const domain = `${process.env.SERVER}` || '0.0.0.0';
-    const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
+    // const port = normalizePort(`${process.env.PORT}` || '3000');
+    const domain = '0.0.0.0';
+    // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
     console.log("Starting server setup…");
 
@@ -139,15 +140,14 @@ function startServer() {
     
     const io = new Server(server, {
         cors: {
-            origin: [domain, admin_url],
+            origin: ["*"],
             credentials: true
         },
     });
 
-    app.listen(port, domain, () => {
-        console.log(`Server running on port ${domain}:${port}`);
-    });
-    // app.set("port", port);
+    console.log(`Server running on port ${domain}:${port}`);
+
+    app.set("port", port);
 
     io.engine.use(expressSessionMiddleware);
 
