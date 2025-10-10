@@ -19,28 +19,36 @@ export namespace Database {
             await mongoose.connect(db_uri, {
                 dbName: db_name
             });
+            console.log("Successfully established connection to the database")
             logger.info("Successfully established connection to the database");
         } catch (err) {
+            console.error(`Failed to connect to the database ${err}`);
             logger.error(`Failed to connect to the database ${err}`);
             process.exit();
         }
     }
 
     mongoose.connection.on("connected", () => {
+        console.log("Currently connected to: " + db_name + " db");
         logger.info("Currently connected to: " + db_name + " db");
     });
 
     mongoose.connection.on("error", (err) => {
+        console.error("Failed to connect to db " + db_name + " on start", err);
         logger.error("Failed to connect to db " + db_name + " on start", err);
     });
 
     mongoose.connection.on("disconnected", () => {
+        console.log("Mongoose default connection to db: " + db_name + " disconnected")
         logger.warn(
             "Mongoose default connection to db: " + db_name + " disconnected"
         );
     });
 
     export var gracefulExit = () => {
+        console.log("Mongoose default connection with db: " +
+            db_name +
+            " is disconnected through app termination")
         logger.warn(
             "Mongoose default connection with db: " +
             db_name +
