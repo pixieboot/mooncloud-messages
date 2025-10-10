@@ -136,14 +136,13 @@ Database._connect().then(() => startServer()).catch((err) => {
     process.exit(1);
 });
 console.log("database connected");
-const port = `${process.env.PORT}` || '8080';
+const port = `${process.env.PORT}` || '3000';
 console.log("port:", port);
 
 // Start the server if db connection is established
 function startServer() {
-    const port = normalizePort(`${process.env.PORT}` || '8080');
+    const port = normalizePort(`${process.env.PORT}` || '3000');
     console.log("port set to:", port);
-    // const port = normalizePort(`${process.env.PORT}` || '3000');
     const domain = '0.0.0.0';
     console.log("domain set to:", domain);
     // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
