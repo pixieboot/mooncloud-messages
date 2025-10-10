@@ -4,13 +4,8 @@ import mongoose from "mongoose";
 import { logger } from "../logger";
 
 export namespace Database {
-    const db_user = `${process.env.MONGOUSER}`;
-    const db_pwd = `${process.env.MONGOPASSWORD}`;
     const db_name = `${process.env.MONGO_DB_NAME}`;
-    const db_host = `${process.env.MONGOHOST}`;
-    const port = `${process.env.PORT}`;
-
-    const db_uri = `mongodb://${db_user}:${db_pwd}@${db_host}:27017`
+    const db_uri = `mongodb://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:27017`
 
     // Atlas connection requirement
     // const serverApi = {

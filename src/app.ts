@@ -32,6 +32,7 @@ import { ChatController } from "./controllers/chat.controller";
 import { FriendshipController } from "./controllers/friendship.controller";
 import { LocalUsersController } from "./controllers/local_users.controller";
 const app: Application = express();
+const db_uri = `mongodb://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:27017`
 
 declare module "express-session" {
     interface SessionData {
@@ -71,7 +72,7 @@ app.use(morgan("dev"));
 // Try connecting the session store 
 let sessionStore;
 try {
-    sessionStore = mongoStore.create({ mongoUrl: `${process.env.MONGO_URI}` });
+    sessionStore = mongoStore.create({ mongoUrl: `${db_uri}` });
     console.log("Session store created");
 } catch (err) {
     console.error("Error creating session store:", err);
