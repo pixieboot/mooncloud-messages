@@ -8,7 +8,7 @@
   "license": "ISC",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "dev": "node src/app.js",
     "build": "npm-run-all clean && tsc -p . && bash ./scripts/copyDir.script.sh",
     "clean": "rimraf dist",
     "test": "jest"
