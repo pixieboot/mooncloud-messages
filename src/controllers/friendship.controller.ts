@@ -266,6 +266,7 @@ export namespace FriendshipController {
             }
         }
         catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -296,6 +297,7 @@ export namespace FriendshipController {
                 }
             }
         } catch (err) {
+            console.error(err)
             return undefined;
         }
     }
@@ -363,6 +365,7 @@ export namespace FriendshipController {
             }
         }
         catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -408,6 +411,7 @@ export namespace FriendshipController {
                 return false;
             }
         } catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }

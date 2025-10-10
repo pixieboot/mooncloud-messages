@@ -180,6 +180,7 @@ export namespace ChatController {
                 return chat;
             } else return null;
         } catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -207,6 +208,7 @@ export namespace ChatController {
         }
         catch (err: any) {
             console.log(err);
+            return undefined;
         }
     }
 }

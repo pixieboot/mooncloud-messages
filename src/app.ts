@@ -229,6 +229,7 @@ function startServer() {
                     })
                 }
             } catch (err: any) {
+                console.error(err)
                 throw new Error(err);
             }
         })

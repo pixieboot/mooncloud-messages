@@ -22,6 +22,7 @@ export namespace LocalUsersController {
                 return false;
             }
         } catch (err: any) {
+            console.error(err);
             return undefined;
         }
     }
@@ -39,6 +40,7 @@ export namespace LocalUsersController {
             }
             return result;
         } catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -88,6 +90,7 @@ export namespace LocalUsersController {
             }
             return usersData.length > 0 ? usersData : null;
         } catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -124,6 +127,7 @@ export namespace LocalUsersController {
                 status,
             });
         } catch (err: any) {
+            console.error(err);
             return null;
         }
     }
@@ -153,6 +157,7 @@ export namespace LocalUsersController {
                 }
             );
         } catch (err: any) {
+            console.error(err);
             return null;
         }
     }
@@ -341,6 +346,7 @@ export namespace LocalUsersController {
             }
         }
         catch (err: any) {
+            console.error(err);
             return null;
         }
     }
