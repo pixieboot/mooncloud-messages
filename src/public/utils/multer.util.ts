@@ -2,6 +2,9 @@ import { Request } from "express";
 import path from "path";
 import multer from "multer";
 import slugify from "slugify";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const whiteList = [
   "image/png",
