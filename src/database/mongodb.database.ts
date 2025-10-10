@@ -6,10 +6,6 @@ import { logger } from "../logger";
 export namespace Database {
     const db_name = `${process.env.MONGO_DB_NAME}`;
     const db_uri = `${process.env.MONGO_URI}`;
-    const port = `${process.env.PORT}`
-    console.log(db_name)
-    console.log(db_uri)
-    console.log(port)
     const serverApi = {
         serverApi: {
             version: ServerApiVersion.v1,
