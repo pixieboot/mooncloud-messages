@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkIsNotAuthenticated } from "../controllers/auth.controller";
+import { checkIsNotAuthenticated } from "../controllers/auth.controller.js";
 var router = Router();
 
 // Logout

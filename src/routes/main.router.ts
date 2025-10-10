@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { loginRouter } from "./login.router";
-import { localSignupRouter } from "./signup.router";
-import { logoutRouter } from "./logout.router";
-import { checkIsNotAuthenticated } from "../controllers/auth.controller";
+import { loginRouter } from "./login.router.js";
+import { localSignupRouter } from "./signup.router.js";
+import { logoutRouter } from "./logout.router.js";
+import { checkIsNotAuthenticated } from "../controllers/auth.controller.js";
 
 const router = Router();
 
