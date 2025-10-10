@@ -129,7 +129,7 @@ Database._connect().then(() => startServer()).catch((err) => {
 
 // Start the server if db connection is established
 function startServer() {
-    const port = normalizePort(`${process.env.PORT}` || '3000');
+    const port = normalizePort(`${process.env.PORT}` || '8080');
     const domain = `${process.env.SERVER}` || '0.0.0.0';
     const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
