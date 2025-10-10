@@ -135,9 +135,6 @@ Database._connect().then(() => startServer()).catch((err) => {
     console.error("Failed to connect to DB:", err);
     process.exit(1);
 });
-console.log("database connected");
-const port = `${process.env.PORT}` || '3000';
-console.log("port:", port);
 
 // Start the server if db connection is established
 function startServer() {
