@@ -112,7 +112,7 @@ console.log("passport session set");
 
 // Index routing
 app.use("/", indexRouter);
-console.log("idex / routing set");
+console.log("index / routing set");
 
 // 404 handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -136,6 +136,8 @@ Database._connect().then(() => startServer()).catch((err) => {
     process.exit(1);
 });
 console.log("database connected");
+const port = `${process.env.PORT}` || '8080';
+console.log("port:", port);
 
 // Start the server if db connection is established
 function startServer() {
