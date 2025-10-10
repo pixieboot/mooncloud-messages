@@ -10,7 +10,7 @@ export namespace Database {
     const db_host = `${process.env.MONGOHOST}`;
     const port = `${process.env.PORT}`;
 
-    const db_uri = `mongodb://${db_user}:${db_pwd}@${db_host}:${port}`
+    const db_uri = `mongodb://${db_user}:${db_pwd}@${db_host}:27017`
 
     const serverApi = {
         serverApi: {
