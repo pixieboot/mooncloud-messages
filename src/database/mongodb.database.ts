@@ -6,6 +6,8 @@ import { logger } from "../logger";
 export namespace Database {
     const db_name = `${process.env.MONGO_DB_NAME}`;
     const db_uri = `${process.env.MONGO_URI}`;
+    const port = `${process.env.PORT}`
+
     const serverApi = {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -16,7 +18,9 @@ export namespace Database {
 
     export async function _connect() {
         try {
+            console.log(db_name)
             console.log(db_uri)
+            console.log(port)
             await mongoose.connect(db_uri);
             console.log("Successfully established connection to the database")
             logger.info("Successfully established connection to the database");
