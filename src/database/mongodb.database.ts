@@ -12,19 +12,17 @@ export namespace Database {
 
     const db_uri = `mongodb://${db_user}:${db_pwd}@${db_host}:27017`
 
-    const serverApi = {
-        serverApi: {
-            version: ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
-        },
-    };
+    // Atlas connection requirement
+    // const serverApi = {
+    //     serverApi: {
+    //         version: ServerApiVersion.v1,
+    //         strict: true,
+    //         deprecationErrors: true,
+    //     },
+    // };
 
     export async function _connect() {
         try {
-            console.log(db_name)
-            console.log(db_uri)
-            console.log(port)
             await mongoose.connect(db_uri);
             console.log("Successfully established connection to the database")
             logger.info("Successfully established connection to the database");
