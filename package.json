@@ -6,6 +6,7 @@
   "keywords": [],
   "author": "ND",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "node src/app.ts",
