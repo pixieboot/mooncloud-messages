@@ -68,19 +68,6 @@ app.use(flash());
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 
-if (!`${process.env.SECRET_KEY}`) {
-    console.error("env SECRET_KEY not defined");
-    process.exit(1);
-} else console.log("env SECRET_KEY found");
-if (!`${process.env.MONGO_URI}`) {
-    console.error("env MONGO_URI not defined");
-    process.exit(1);
-} else console.log("env MONGO_URI found");
-if (!`${process.env.MONGO_DB_NAME}`) {
-    console.error("env MONGO_DB_NAME not defined");
-    process.exit(1);
-} else console.log("env MONGO_DB_NAME found");
-
 // Try connecting the session store 
 let sessionStore;
 try {
@@ -193,7 +180,7 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error("Socket session fetch error:", err);
-                return undefined;
+                return;
             }
         } else throw new Error("No sessionID found");
     })
@@ -222,7 +209,7 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -278,7 +265,7 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -312,7 +299,7 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -331,7 +318,7 @@ function startServer() {
                     }
                 } catch (err: any) {
                     console.error(err);
-                    return undefined;
+                    return;
                 }
             }
         })
@@ -346,7 +333,7 @@ function startServer() {
                     socket.emit("is-friend-declined", { result });
                 } catch (err: any) {
                     console.error(err);
-                    return undefined;
+                    return;
                 }
             }
         })
@@ -364,7 +351,7 @@ function startServer() {
                     }
                 } catch (err: any) {
                     console.error(err);
-                    return undefined;
+                    return;
                 }
             }
         })
@@ -383,7 +370,7 @@ function startServer() {
                 socket.emit("open-initiated-chat", { requesterUsername, receiverUsername });
             } catch (err) {
                 console.error(err);
-                return undefined;
+                return;
             }
         }
         )
@@ -399,7 +386,7 @@ function startServer() {
             }
             catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -417,7 +404,7 @@ function startServer() {
                 } else return null;
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -430,7 +417,7 @@ function startServer() {
                 socket.emit("search-result", { usersResult, friendshipsResult });
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         });
     });
@@ -446,7 +433,7 @@ function startServer() {
                 socket.emit("is-password-changed", { isChanged });
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
@@ -518,7 +505,7 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return undefined;
+                return;
             }
         })
     })
