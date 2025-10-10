@@ -16,9 +16,7 @@ export namespace Database {
 
     export async function _connect() {
         try {
-            await mongoose.connect(db_uri, {
-                dbName: db_name
-            });
+            await mongoose.connect(db_uri);
             console.log("Successfully established connection to the database")
             logger.info("Successfully established connection to the database");
         } catch (err) {
