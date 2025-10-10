@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { Bcrypt } from "../public/utils/bcrypt.util";
-import { LocalUsersController } from "../controllers/local_users.controller";
+import { Bcrypt } from "../public/utils/bcrypt.util.js";
+import { LocalUsersController } from "../controllers/local_users.controller.js";
 
 export class User {
   readonly userID: string;

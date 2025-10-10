@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { localUserModel } from "../database/schemas/local_user.schema";
-import { friendshipModel } from "../database/schemas/friendship.schema";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
+import { friendshipModel } from "../database/schemas/friendship.schema.js";
 
 export namespace FriendshipController {
 

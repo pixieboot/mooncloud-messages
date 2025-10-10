@@ -1,7 +1,7 @@
-import { friendshipModel } from "../database/schemas/friendship.schema";
-import { localUserModel } from "../database/schemas/local_user.schema";
-import { chatModel } from "../database/schemas/chat.schema";
-import { Bcrypt } from "../public/utils/bcrypt.util";
+import { friendshipModel } from "../database/schemas/friendship.schema.js";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
+import { chatModel } from "../database/schemas/chat.schema.js";
+import { Bcrypt } from "../public/utils/bcrypt.util.js";
 export namespace LocalUsersController {
     /**
      * @param username: string

@@ -1,0 +1,164 @@
+<div class="container vh-100 d-flex flex-column justify-content-center">
+  <div class="tab-content pb-5" id="pills-tabContent">
+    <!-- FRIENDS SECTION -->
+    <div
+      class="tab-pane fade show active"
+      id="pills-friends"
+      role="tabpanel"
+      aria-labelledby="pills-friends-tab"
+      tabindex="0"
+    >
+      <section id="friend_list_section">
+        <div class="d-flex justify-content-center">
+          <div id="friend_list_layout" class="bg-dark p-2 pt-0">
+            <div id="tab_title" class="p-1 mb-2 d-flex justify-content-center w-100">
+                <h5 class="m-1">Friends</h5>
+            </div>
+            <div
+              class="nav nav-pills mb-3 mb-md-0"
+              id="v-pills-tab"
+              role="tablist"
+              aria-orientation="vertical"
+            >
+              <!-- USER PROFILE ROW -->
+              <div class="list-group" id="list-tab" role="tablist">
+                <%- include("friend_list.ejs") %>
+              </div>
+            </div>
+            <div class="text-center p-3">
+              <button
+                id="add_user_btn"
+                type="button"
+                class="btn btn-secondary btn-rounded btn-icon"
+                data-bs-target="#search-users-modal"
+                data-bs-toggle="modal"
+              >
+                <i class="fa-solid fa-user-plus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- USER PROFILE INFO -->
+          <div class="tab-content ms-4" id="v-pills-tabContent"></div>
+        </div>
+      </section>
+    </div>
+    <!-- MESSAGES SECTION -->
+    <div
+      class="tab-pane fade"
+      id="pills-messages"
+      role="tabpanel"
+      aria-labelledby="pills-messages-tab"
+      tabindex="0"
+    >
+      <section id="chat_section" class="d-flex justify-content-center align-items-center mx-auto"><%- include("messages_tab.ejs") %></section>
+    </div>
+    <!-- NOTIFICATIONS SECTION -->
+    <div
+      class="tab-pane fade"
+      id="pills-notifications"
+      role="tabpanel"
+      aria-labelledby="pills-notifications-tab"
+      tabindex="0"
+    >
+      <section id="notification_section"><%- include("notifications_tab.ejs") %></section>
+    </div>
+    <!-- SETTINGS SECTION  -->
+    <div
+      class="tab-pane fade"
+      id="pills-settings"
+      role="tabpanel"
+      aria-labelledby="pills-settings-tab"
+      tabindex="0"
+    >
+      <section id="settings_section"><%- include("settings_tab.ejs") %></section>
+    </div>
+  </div>
+  <div class="pills-tab">
+    <ul
+      id="pills-tab"
+      class="nav nav-pills d-flex flex-column flex-sm-row justify-content-between align-items-center py-2 "
+      role="tablist"
+    >
+      <li class="nav-item" role="presentation">
+        <button
+          id="pills-friends-tab"
+          class="nav-link active"
+          data-bs-toggle="pill"
+          data-bs-target="#pills-friends"
+          role="tab"
+          type="button"
+          aria-controls="pills-friends"
+          aria-selected="false"
+        >
+          <i class="fa-solid fa-user-group me-1"></i>
+          Friends
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          id="pills-messages-tab"
+          class="nav-link"
+          data-bs-toggle="pill"
+          data-bs-target="#pills-messages"
+          role="tab"
+          type="button"
+          aria-controls="pills-messages"
+          aria-selected="true"
+        >
+          <i class="fa-solid fa-message me-1"></i>
+          Messages
+        </button>
+      </li>
+      <li class="nav-image d-none d-md-block">
+        <img
+          id="envelope_img"
+          src="assets/vectors/circle-envelope.vector.png"
+          alt="Logo"
+          width="38"
+          height="38"
+          class="mb-1 "
+        />
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          id="pills-notifications-tab"
+          class="nav-link"
+          data-bs-toggle="pill"
+          data-bs-target="#pills-notifications"
+          role="tab"
+          type="button"
+          aria-controls="pills-notifications"
+          aria-selected="false"
+        >
+          <i class="fa-solid fa-bell me-1"></i>
+          Notifications
+          <span id="notifications-count" class="badge bg-secondary ms-1"></span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          id="pills-settings-tab"
+          class="nav-link"
+          data-bs-toggle="pill"
+          data-bs-target="#pills-settings"
+          role="tab"
+          type="button"
+          aria-controls="pills-settings"
+          aria-selected="false"
+        >
+          <i class="fa-solid fa-gear me-1"></i>
+          Settings
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+<%- include('../modals/search_users.ejs') %>
+<%- include('../modals/password_change.ejs') %>
+<%- include('../modals/account_removal.ejs') %>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script
+  type="module"
+  src="../public/utils/html/client.socket.html.js"
+></script>
+<script type="module" src="../public/utils/html/empty_tabs_controller.html.js"></script>

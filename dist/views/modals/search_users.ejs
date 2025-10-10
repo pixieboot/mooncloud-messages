@@ -1,0 +1,42 @@
+<div class="modal fade" id="search-users-modal" aria-hidden="true" aria-labelledby="search-users-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border border-light border-2">
+            <div class="modal-header p-1 px-3 bg-light">
+                <div class="logo">
+                    <img src="assets/logo/mooncloud_logo_128x128.png" alt="Logo" width="34" height="34" class="d-inline-block">
+                </div>
+                <button close-search-for-users-modal type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div id="modal_body" class="modal-body text-center mx-5 pb-2">
+                <h2 class="pb-2">Search friends</h2>
+                <div class="input-group mb-1">
+                    <div class="form-floating">
+                        <input type="search" class="form-control" placeholder="Search" name="search"
+                            id="search_input" />
+                        <label for="search_input">Type a letter or a username</label>
+                        <span class="invalid-tooltip">This user does not exist </span>
+                    </div>
+                    <button search-button type="button" class="btn btn-secondary">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+                <p search-info class="text-warning m-0 mt-1"></p>
+            </div>
+            <div id="user_cards_container" class="user-cards" user-cards-container></div>
+            <template user-card-template>
+                <div search-user-card class="search-user-card d-flex flex-column align-items-center bg-dark pt-2 m-2">
+                    <div class="search-user-avatar mt-1">
+                        <img avatar id="search_user_avatar" src="" alt="user-details-avatar" />
+                    </div>
+                    <div class="search-user-body d-flex flex-column align-items-center" body>
+                        <p class="search-user-username m-0 mb-2 text-center" username></p>
+                        <button class="search-btn btn btn-secondary" action></button>
+                        <p class="search-user-desc small mt-2 text-center" desc></p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+<script type="module" src="../public/utils/html/search_engine.html.js"></script>

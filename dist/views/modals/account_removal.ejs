@@ -1,0 +1,35 @@
+<div class="modal fade" id="remove_profile_modal" aria-hidden="true" aria-labelledby="remove_profile_modal"
+    tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-light border-2">
+            <div class="modal-header p-2 px-3 bg-light">
+                <div class="logo">
+                    <img src="assets/logo/mooncloud_logo_128x128.png" alt="Logo" width="34" height="34"
+                        class="d-inline-block" />
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="account_removal_wrapper">
+                    <div class="p-4">
+                        <p class="m-0 p-0 text-warning">This action will delete all of your data from our database,
+                            including
+                            friends, messages, notifications and you'll be logged out.</p>
+                        <hr>
+                        <p class="m-0 p-0 text-warning fs-5">Are you sure you want to proceed with removing your
+                            account?</p>
+                    </div>
+                </div>
+                <div id="settings_password_change_buttons"
+                    class="d-flex align-items-center justify-content-between mt-3 px-3">
+                    <button close-password-change-modal type="button" class="btn btn-info" data-bs-dismiss="modal"
+                        aria-label="Close"><i class="fa-solid fa-xmark me-1"></i>Cancel</button>
+                    <form action="/logout?_method=DELETE" method="post">
+                        <button id="remove_account_btn" type="submit" class="btn btn-danger"><i
+                            class="fa-solid fa-trash me-1"></i>Remove account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

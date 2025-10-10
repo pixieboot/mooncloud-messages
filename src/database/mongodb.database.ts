@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { ServerApiVersion } from "mongodb";
 import mongoose from "mongoose";
-import { logger } from "../logger";
+import { logger } from "../logger.js";
 
 export namespace Database {
     const db_name = `${process.env.MONGO_DB_NAME}`;

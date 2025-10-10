@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
-import { chatModel } from "../database/schemas/chat.schema";
-import { localUserModel } from "../database/schemas/local_user.schema";
+import { chatModel } from "../database/schemas/chat.schema.js";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
 
 export namespace ChatController {
     /**
