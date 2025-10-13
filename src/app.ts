@@ -160,7 +160,9 @@ function startServer() {
     instrument(io, { auth: false });
 
     io.use(async (socket) => {
-        socket.on("connection", async (socket) => {
+        socket.on("connection", async (socket) => { 
+            console.log("socket connection done", socket)
+        })
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
         if (sessionID) {
@@ -521,7 +523,7 @@ function startServer() {
         debugLib("node_app:server")("Listening on " + bind);
     }
 
-})};
+};
 
 // Global error catchers
 process.on('unhandledRejection', (reason, p) => {
