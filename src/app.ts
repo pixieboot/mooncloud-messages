@@ -160,35 +160,36 @@ function startServer() {
     instrument(io, { auth: false });
 
     io.use(async (socket, next) => {
-        logger.info(`User connected: ${socket.id}`);
-        const sessionID = socket.request.session.id;
-        if (sessionID) {
-            try {
-                const result = await sessions.findOne({
-                    _id: sessionID,
-                })
-                if (result) {
-                    let session = result.session;
-                    let parsedSession = JSON.parse(session) || "";
-                    let userID = parsedSession.passport.user;
-                    const user = await localUserModel.findOne({
-                        _id: userID,
+        io.on("connection", async (socket) => {
+            logger.info(`User connected: ${socket.id}`);
+            const sessionID = socket.request.session.id;
+            if (sessionID) {
+                try {
+                    const result = await sessions.findOne({
+                        _id: sessionID,
                     })
-                    if (user) {
-                        socket.data.sessionID = sessionID;
-                        socket.data.userID = userID;
-                        socket.data.username = user?.username;
-                        return next();
+                    if (result) {
+                        let session = result.session;
+                        let parsedSession = JSON.parse(session) || "";
+                        let userID = parsedSession.passport.user;
+                        const user = await localUserModel.findOne({
+                            _id: userID,
+                        })
+                        if (user) {
+                            socket.data.sessionID = sessionID;
+                            socket.data.userID = userID;
+                            socket.data.username = user?.username;
+                            return next();
+                        }
+                        else throw new Error("No user found during SocketIO session search");
                     }
-                    else throw new Error("No user found during SocketIO session search");
+                } catch (err: any) {
+                    console.error("Socket session fetch error:", err);
+                    return;
                 }
-            } catch (err: any) {
-                console.error("Socket session fetch error:", err);
-                return;
-            }
-        } else throw new Error("No sessionID found");
-        
-        io.on("connection", (socket) => {
+            } else throw new Error("No sessionID found");
+
+
             socket.on("disconnect", () =>
                 logger.info(`User(${socket.id}) has disconnected`)
             );
