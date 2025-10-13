@@ -187,8 +187,8 @@ function startServer() {
                 return;
             }
         } else throw new Error("No sessionID found");
-
-        socket.on("connection", async (socket) => {
+        
+        io.on("connection", (socket) => {
             socket.on("disconnect", () =>
                 logger.info(`User(${socket.id}) has disconnected`)
             );
@@ -199,7 +199,8 @@ function startServer() {
                 username: socket.data.username,
             })
 
-            socket.on("load-user-data", async (user: any) => {
+
+            socket.on("load-user-data", async (user) => {
                 try {
                     let result = await LocalUsersController.getLocalUser(user);
                     if (result) {
@@ -211,7 +212,8 @@ function startServer() {
                 }
             })
 
-            socket.on("send-private-message", async (content: any, to: any, chatID: any) => {
+
+            socket.on("send-private-message", async (content, to, chatID) => {
                 try {
                     let messageID = await ChatController.sendMessage(socket.data.username, content, chatID);
                     if (messageID) {
@@ -245,7 +247,7 @@ function startServer() {
                 }
             })
 
-            socket.on("friend-request", async (user: any, target: any) => {
+            socket.on("friend-request", async (user, target) => {
                 try {
                     let result = await FriendshipController.requestFriend(user, target);
                     if (result) {
@@ -261,7 +263,7 @@ function startServer() {
                 }
             })
 
-            socket.on("check-friend-requests", async (user: any) => {
+            socket.on("check-friend-requests", async (user) => {
                 try {
                     let pendingFriendRequests;
                     let result = await FriendshipController.findFriendships(user);
@@ -293,7 +295,7 @@ function startServer() {
                 }
             })
 
-            socket.on("accept-friend-request", async (requester: any, receiver: any) => {
+            socket.on("accept-friend-request", async (requester, receiver) => {
                 if (requester) {
                     try {
                         let friendship = await FriendshipController.findAFriendshipViaRequester(requester, receiver);
@@ -311,7 +313,7 @@ function startServer() {
                 }
             })
 
-            socket.on("decline-friend-request", async (requester: any, receiver: any) => {
+            socket.on("decline-friend-request", async (requester, receiver) => {
                 if (requester) {
                     try {
                         let friendship = await FriendshipController.findAFriendshipViaRequester(requester, receiver);
@@ -324,7 +326,7 @@ function startServer() {
                 }
             })
 
-            socket.on("friend-list-refresh", async (user: any) => {
+            socket.on("friend-list-refresh", async (user) => {
                 if (user) {
                     try {
                         let friends = await FriendshipController.getAllFriends(user);
@@ -340,7 +342,7 @@ function startServer() {
                 }
             })
 
-            socket.on("initiate-chat", async (requesterUsername: any, receiverUsername: any) => {
+            socket.on("initiate-chat", async (requesterUsername, receiverUsername) => {
                 try {
                     let chatID = await ChatController.checkIfChatExists(requesterUsername, receiverUsername);
                     if (!chatID) {
@@ -357,7 +359,7 @@ function startServer() {
             }
             )
 
-            socket.on("request-single-chat-load", async (chatID: any) => {
+            socket.on("request-single-chat-load", async (chatID) => {
                 try {
                     let chatData = await ChatController.loadChat(chatID);
                     if (chatData) {
@@ -370,7 +372,7 @@ function startServer() {
                 }
             })
 
-            socket.on("update-chat-list", async (user: any, friend: any, request: any) => {
+            socket.on("update-chat-list", async (user, friend, request) => {
                 try {
                     let chatsData = await ChatController.findAllChatsOfAUser(user);
                     if (chatsData) {
@@ -386,7 +388,7 @@ function startServer() {
                 }
             })
 
-            socket.on("search-input", async (user: any, searchInput: any) => {
+            socket.on("search-input", async (user, searchInput) => {
                 try {
                     let usersResult = await LocalUsersController.getLocalUser(searchInput);
                     let friendshipsResult = await FriendshipController.findFriendships(user);
@@ -397,7 +399,7 @@ function startServer() {
                 }
             });
 
-            socket.on("old-password-change-input", async (user: any, password: any, newPassword: any) => {
+            socket.on("old-password-change-input", async (user, password, newPassword) => {
                 try {
                     let isChanged;
                     let result = await LocalUsersController.checkLocalUserPassword(user, password);
@@ -411,7 +413,7 @@ function startServer() {
                 }
             })
 
-            socket.on("update-user-profile", async (user: any, newUsername: any, newEmail: any, newBio: any, newAvatar: any, newAvatarBase64Data: any) => {
+            socket.on("update-user-profile", async (user, newUsername, newEmail, newBio, newAvatar, newAvatarBase64Data) => {
                 let filteredOriginalAvatar;
                 let newAvatarName;
                 let filteredUserResultAvatarName;
@@ -481,7 +483,7 @@ function startServer() {
                 }
             })
 
-            socket.on("remove-account", async (approval: any, user: any) => {
+            socket.on("remove-account", async (approval, user) => {
                 if (approval === true) {
                     let result = await LocalUsersController.deleteLocalUser(user);
                 }
