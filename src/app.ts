@@ -159,7 +159,7 @@ function startServer() {
 
     instrument(io, { auth: false });
 
-    io.on("connection", async (socket) => {
+    io.use(async (socket, next) => {
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
         if (sessionID) {
@@ -178,7 +178,7 @@ function startServer() {
                         socket.data.sessionID = sessionID;
                         socket.data.userID = userID;
                         socket.data.username = user?.username;
-                        return;
+                        return next();
                     }
                     else throw new Error("No user found during SocketIO session search");
                 }
