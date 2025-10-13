@@ -156,6 +156,7 @@ function startServer() {
     instrument(io, { auth: false });
 
     io.use(async (socket, next) => {
+        socket.on("connection", async () => {
         expressSessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
@@ -483,7 +484,7 @@ function startServer() {
                 let result = await LocalUsersController.deleteLocalUser(user);
             }
         })
-    })
+    })})
 
     server.listen(port, domain, () => logger.info("Server running on port: " + port));
     server.on("error", onError);
