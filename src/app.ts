@@ -156,7 +156,7 @@ function startServer() {
     instrument(io, { auth: false });
 
     io.use(async (socket, next) => {
-        socket.on("connection", async () => {
+        io.on("connection", async () => {
         expressSessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
