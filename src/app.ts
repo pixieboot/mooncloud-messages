@@ -153,11 +153,13 @@ function startServer() {
 
     io.engine.use(expressSessionMiddleware);
 
+    io.use((socket, next) => {
+        expressSessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
+    });
+
     instrument(io, { auth: false });
 
     io.use(async (socket, next) => {
-        io.on("connection", async () => {
-        expressSessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
         if (sessionID) {
@@ -176,27 +178,33 @@ function startServer() {
                         socket.data.sessionID = sessionID;
                         socket.data.userID = userID;
                         socket.data.username = user?.username;
-                        return;
+                        return next();
                     }
                     else throw new Error("No user found during SocketIO session search");
                 }
             } catch (err: any) {
                 console.error("Socket session fetch error:", err);
-                return;
+                return undefined;
             }
         } else throw new Error("No sessionID found");
+    })
 
-
+    io.on("connection", (socket) => {
+        logger.info(`A user(${socket.id}) has connected`);
         socket.on("disconnect", () =>
             logger.info(`User(${socket.id}) has disconnected`)
         );
+    });
 
+    io.on("connection", (socket) => {
         socket.emit("session", {
             sessionID: socket.data.sessionID,
             userID: socket.data.userID,
             username: socket.data.username,
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("load-user-data", async (user) => {
             try {
                 let result = await LocalUsersController.getLocalUser(user);
@@ -205,10 +213,12 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("send-private-message", async (content, to, chatID) => {
             try {
                 let messageID = await ChatController.sendMessage(socket.data.username, content, chatID);
@@ -227,14 +237,16 @@ function startServer() {
                     })
                 }
             } catch (err: any) {
-                console.error(err)
                 throw new Error(err);
             }
         })
+    })
 
-
+    io.on("connection", (socket) => {
         socket.join(socket.data.username);
+    })
 
+    io.on("connection", (socket) => {
         socket.on("disconnect", async () => {
             const matchingSockets = await io.in(socket.data.userID).fetchSockets();
             const isDisconnected = matchingSockets.length === 0;
@@ -242,7 +254,9 @@ function startServer() {
                 socket.broadcast.emit("user-disconnected", socket.data.userID);
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("friend-request", async (user, target) => {
             try {
                 let result = await FriendshipController.requestFriend(user, target);
@@ -255,10 +269,12 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("check-friend-requests", async (user) => {
             try {
                 let pendingFriendRequests;
@@ -287,10 +303,12 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", async (socket) => {
         socket.on("accept-friend-request", async (requester, receiver) => {
             if (requester) {
                 try {
@@ -304,11 +322,13 @@ function startServer() {
                     }
                 } catch (err: any) {
                     console.error(err);
-                    return;
+                    return undefined;
                 }
             }
         })
+    })
 
+    io.on("connection", async (socket) => {
         socket.on("decline-friend-request", async (requester, receiver) => {
             if (requester) {
                 try {
@@ -317,11 +337,13 @@ function startServer() {
                     socket.emit("is-friend-declined", { result });
                 } catch (err: any) {
                     console.error(err);
-                    return;
+                    return undefined;
                 }
             }
         })
+    })
 
+    io.on("connection", async (socket) => {
         socket.on("friend-list-refresh", async (user) => {
             if (user) {
                 try {
@@ -333,11 +355,13 @@ function startServer() {
                     }
                 } catch (err: any) {
                     console.error(err);
-                    return;
+                    return undefined;
                 }
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("initiate-chat", async (requesterUsername, receiverUsername) => {
             try {
                 let chatID = await ChatController.checkIfChatExists(requesterUsername, receiverUsername);
@@ -350,11 +374,13 @@ function startServer() {
                 socket.emit("open-initiated-chat", { requesterUsername, receiverUsername });
             } catch (err) {
                 console.error(err);
-                return;
+                return undefined;
             }
         }
         )
+    })
 
+    io.on("connection", (socket) => {
         socket.on("request-single-chat-load", async (chatID) => {
             try {
                 let chatData = await ChatController.loadChat(chatID);
@@ -364,10 +390,12 @@ function startServer() {
             }
             catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", async (socket) => {
         socket.on("update-chat-list", async (user, friend, request) => {
             try {
                 let chatsData = await ChatController.findAllChatsOfAUser(user);
@@ -380,10 +408,12 @@ function startServer() {
                 } else return null;
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("search-input", async (user, searchInput) => {
             try {
                 let usersResult = await LocalUsersController.getLocalUser(searchInput);
@@ -391,10 +421,12 @@ function startServer() {
                 socket.emit("search-result", { usersResult, friendshipsResult });
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         });
+    });
 
+    io.on("connection", (socket) => {
         socket.on("old-password-change-input", async (user, password, newPassword) => {
             try {
                 let isChanged;
@@ -405,10 +437,12 @@ function startServer() {
                 socket.emit("is-password-changed", { isChanged });
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("update-user-profile", async (user, newUsername, newEmail, newBio, newAvatar, newAvatarBase64Data) => {
             let filteredOriginalAvatar;
             let newAvatarName;
@@ -475,16 +509,18 @@ function startServer() {
                 }
             } catch (err: any) {
                 console.error(err);
-                return;
+                return undefined;
             }
         })
+    })
 
+    io.on("connection", (socket) => {
         socket.on("remove-account", async (approval, user) => {
             if (approval === true) {
                 let result = await LocalUsersController.deleteLocalUser(user);
             }
         })
-    })})
+    })
 
     server.listen(port, domain, () => logger.info("Server running on port: " + port));
     server.on("error", onError);
