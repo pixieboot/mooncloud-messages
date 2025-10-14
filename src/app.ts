@@ -192,17 +192,13 @@ function startServer() {
     io.on("connection", (socket) => {
         logger.info(`A user(${socket.id}) has connected`);
 
-
         socket.emit("session", {
             sessionID: socket.data.sessionID,
             userID: socket.data.userID,
             username: socket.data.username,
         })
 
-        // is this right?
         socket.join(socket.data.username);
-
-        // Register events for the socket
 
         socket.on("load-user-data", async (user) => {
             try {
