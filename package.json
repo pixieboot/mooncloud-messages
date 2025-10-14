@@ -6,9 +6,10 @@
   "keywords": [],
   "author": "ND",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "dev": "node src/app.ts",
     "build": "npm-run-all clean && tsc -p . && bash ./scripts/copyDir.script.sh",
     "clean": "rimraf dist",
     "test": "jest"

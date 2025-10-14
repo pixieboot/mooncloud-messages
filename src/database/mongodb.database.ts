@@ -1,22 +1,23 @@
 import "dotenv/config";
 import { ServerApiVersion } from "mongodb";
 import mongoose from "mongoose";
-import { logger } from "../logger";
+import { logger } from "../logger.js";
 
 export namespace Database {
     const db_name = `${process.env.MONGO_DB_NAME}`;
-    const db_uri = `${process.env.MONGO_URI}`;
-    const serverApi = {
-        serverApi: {
-            version: ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
-        },
-    };
+    const db_uri = `mongodb://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:27017`
+
+    // Atlas connection requirement
+    // const serverApi = {
+    //     serverApi: {
+    //         version: ServerApiVersion.v1,
+    //         strict: true,
+    //         deprecationErrors: true,
+    //     },
+    // };
 
     export async function _connect() {
         try {
-            console.log(db_uri)
             await mongoose.connect(db_uri);
             console.log("Successfully established connection to the database")
             logger.info("Successfully established connection to the database");

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { User } from "../classes/user.class";
-import { imageUpload } from "../public/utils/multer.util";
-import { localUserModel } from "../database/schemas/local_user.schema";
+import { User } from "../classes/user.class.js";
+import { imageUpload } from "../public/utils/multer.util.js";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
 import sanitizeHtml from "sanitize-html";
 var router = Router();
 

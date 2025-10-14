@@ -2,22 +2,25 @@ import "dotenv/config";
 import "ejs";
 // import fs from "fs";
 import express, { Application, Request, Response, NextFunction } from "express";
+import { fileURLToPath } from 'url';
 import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import cookieParser from "cookie-parser";
 import expressLayouts from "express-ejs-layouts";
 import expressSession, { Session } from "express-session";
 import bodyParser from "body-parser";
 import createError from "http-errors";
 import debugLib from "debug";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import http from "http";
 import morgan from "morgan";
 import passport, { session } from "passport";
-import indexRouter from "./routes/index";
-import "./strategies/local.strategy";
-import "./strategies/discord.strategy";
+import indexRouter from "./routes/index.js";
+import "./strategies/local.strategy.js";
+import "./strategies/discord.strategy.js";
 import mongoStore from "connect-mongo";
-import { Database } from "./database/mongodb.database";
+import { Database } from "./database/mongodb.database.js";
 // import mongoose from "mongoose";
 import flash from "express-flash";
 import methodOverride from "method-override";
@@ -26,12 +29,13 @@ import { Server } from "socket.io";
 import "socket.io-client";
 // import { RedisClient } from "./database/redis.database";
 import { instrument } from "@socket.io/admin-ui";
-import { sessions } from "./database/schemas/sessions.schema";
-import { localUserModel } from "./database/schemas/local_user.schema";
-import { ChatController } from "./controllers/chat.controller";
-import { FriendshipController } from "./controllers/friendship.controller";
-import { LocalUsersController } from "./controllers/local_users.controller";
+import { sessions } from "./database/schemas/sessions.schema.js";
+import { localUserModel } from "./database/schemas/local_user.schema.js";
+import { ChatController } from "./controllers/chat.controller.js";
+import { FriendshipController } from "./controllers/friendship.controller.js";
+import { LocalUsersController } from "./controllers/local_users.controller.js";
 const app: Application = express();
+const db_uri = `mongodb://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:27017`
 
 declare module "express-session" {
     interface SessionData {
@@ -68,23 +72,10 @@ app.use(flash());
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 
-if (!`${process.env.SECRET_KEY}`) {
-    console.error("env SECRET_KEY not defined");
-    process.exit(1);
-} else console.log("env SECRET_KEY found");
-if (!`${process.env.MONGO_URI}`) {
-    console.error("env MONGO_URI not defined");
-    process.exit(1);
-} else console.log("env MONGO_URI found");
-if (!`${process.env.MONGO_DB_NAME}`) {
-    console.error("env MONGO_DB_NAME not defined");
-    process.exit(1);
-} else console.log("env MONGO_DB_NAME found");
-
 // Try connecting the session store 
 let sessionStore;
 try {
-    sessionStore = mongoStore.create({ mongoUrl: `${process.env.MONGO_URI}` });
+    sessionStore = mongoStore.create({ mongoUrl: `${db_uri}` });
     console.log("Session store created");
 } catch (err) {
     console.error("Error creating session store:", err);
@@ -200,20 +191,15 @@ function startServer() {
 
     io.on("connection", (socket) => {
         logger.info(`A user(${socket.id}) has connected`);
-        socket.on("disconnect", () =>
-            logger.info(`User(${socket.id}) has disconnected`)
-        );
-    });
 
-    io.on("connection", (socket) => {
         socket.emit("session", {
             sessionID: socket.data.sessionID,
             userID: socket.data.userID,
             username: socket.data.username,
         })
-    })
 
-    io.on("connection", (socket) => {
+        socket.join(socket.data.username);
+
         socket.on("load-user-data", async (user) => {
             try {
                 let result = await LocalUsersController.getLocalUser(user);
@@ -225,9 +211,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("send-private-message", async (content, to, chatID) => {
             try {
                 let messageID = await ChatController.sendMessage(socket.data.username, content, chatID);
@@ -249,23 +233,16 @@ function startServer() {
                 throw new Error(err);
             }
         })
-    })
 
-    io.on("connection", (socket) => {
-        socket.join(socket.data.username);
-    })
-
-    io.on("connection", (socket) => {
         socket.on("disconnect", async () => {
             const matchingSockets = await io.in(socket.data.userID).fetchSockets();
             const isDisconnected = matchingSockets.length === 0;
             if (isDisconnected) {
                 socket.broadcast.emit("user-disconnected", socket.data.userID);
             }
+            logger.info(`User(${socket.id}) has disconnected`)
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("friend-request", async (user, target) => {
             try {
                 let result = await FriendshipController.requestFriend(user, target);
@@ -281,9 +258,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("check-friend-requests", async (user) => {
             try {
                 let pendingFriendRequests;
@@ -315,9 +290,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", async (socket) => {
         socket.on("accept-friend-request", async (requester, receiver) => {
             if (requester) {
                 try {
@@ -335,9 +308,7 @@ function startServer() {
                 }
             }
         })
-    })
 
-    io.on("connection", async (socket) => {
         socket.on("decline-friend-request", async (requester, receiver) => {
             if (requester) {
                 try {
@@ -350,9 +321,7 @@ function startServer() {
                 }
             }
         })
-    })
 
-    io.on("connection", async (socket) => {
         socket.on("friend-list-refresh", async (user) => {
             if (user) {
                 try {
@@ -368,9 +337,7 @@ function startServer() {
                 }
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("initiate-chat", async (requesterUsername, receiverUsername) => {
             try {
                 let chatID = await ChatController.checkIfChatExists(requesterUsername, receiverUsername);
@@ -385,11 +352,8 @@ function startServer() {
                 console.error(err);
                 return undefined;
             }
-        }
-        )
-    })
+        })
 
-    io.on("connection", (socket) => {
         socket.on("request-single-chat-load", async (chatID) => {
             try {
                 let chatData = await ChatController.loadChat(chatID);
@@ -402,9 +366,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", async (socket) => {
         socket.on("update-chat-list", async (user, friend, request) => {
             try {
                 let chatsData = await ChatController.findAllChatsOfAUser(user);
@@ -420,9 +382,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("search-input", async (user, searchInput) => {
             try {
                 let usersResult = await LocalUsersController.getLocalUser(searchInput);
@@ -433,9 +393,7 @@ function startServer() {
                 return undefined;
             }
         });
-    });
 
-    io.on("connection", (socket) => {
         socket.on("old-password-change-input", async (user, password, newPassword) => {
             try {
                 let isChanged;
@@ -449,9 +407,7 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("update-user-profile", async (user, newUsername, newEmail, newBio, newAvatar, newAvatarBase64Data) => {
             let filteredOriginalAvatar;
             let newAvatarName;
@@ -521,15 +477,13 @@ function startServer() {
                 return undefined;
             }
         })
-    })
 
-    io.on("connection", (socket) => {
         socket.on("remove-account", async (approval, user) => {
             if (approval === true) {
                 let result = await LocalUsersController.deleteLocalUser(user);
             }
         })
-    })
+    });
 
     server.listen(port, domain, () => logger.info("Server running on port: " + port));
     server.on("error", onError);

@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { localUserModel } from "../database/schemas/local_user.schema";
-import { Bcrypt } from "../public/utils/bcrypt.util";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
+import { Bcrypt } from "../public/utils/bcrypt.util.js";
 
 passport.serializeUser((user: any, done) => {
   console.log("serializing user...");

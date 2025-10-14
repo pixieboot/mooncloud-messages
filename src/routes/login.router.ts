@@ -1,8 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
 import sanitizeHtml from "sanitize-html";
-import { localUserModel } from "../database/schemas/local_user.schema";
-import { Bcrypt } from "../public/utils/bcrypt.util";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
+import { Bcrypt } from "../public/utils/bcrypt.util.js";
 
 var router = Router();
 

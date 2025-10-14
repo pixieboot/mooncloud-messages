@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
-import { chatModel } from "../database/schemas/chat.schema";
-import { localUserModel } from "../database/schemas/local_user.schema";
+import { chatModel } from "../database/schemas/chat.schema.js";
+import { localUserModel } from "../database/schemas/local_user.schema.js";
 
 export namespace ChatController {
     /**
@@ -180,6 +180,7 @@ export namespace ChatController {
                 return chat;
             } else return null;
         } catch (err: any) {
+            console.error(err)
             return undefined;
         }
     }
@@ -207,6 +208,7 @@ export namespace ChatController {
         }
         catch (err: any) {
             console.log(err);
+            return undefined;
         }
     }
 }

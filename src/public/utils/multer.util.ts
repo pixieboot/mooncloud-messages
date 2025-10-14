@@ -2,6 +2,9 @@ import { Request } from "express";
 import path from "path";
 import multer from "multer";
 import slugify from "slugify";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const whiteList = [
   "image/png",
@@ -12,7 +15,7 @@ export const whiteList = [
 
 const storageEngine = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../public/assets/users/uploads"));
+    cb(null, path.join(__dirname, "../public/assets/users/uploads"));
   },
   filename: (req: Request, file, cb) => {
     const fileName = slugify(file.originalname, { lower: true });
@@ -25,6 +28,7 @@ const upload = multer({
   limits: { fileSize: 3 * 1024 * 1024 },
   fileFilter: (req: Request, file, cb) => {
     if (!whiteList.includes(file.mimetype)) {
+      console.log("This file is not allowed")
       return cb(new Error("This file is not allowed"));
     }
     cb(null, true);

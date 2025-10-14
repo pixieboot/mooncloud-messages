@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as DiscordStrategy } from "passport-discord";
 import "dotenv/config";
-import discordUser from "../database/schemas/discord_user.schema";
+import discordUser from "../database/schemas/discord_user.schema.js";
 
 export const authenticateDiscordUser = passport.use(
   new DiscordStrategy(
