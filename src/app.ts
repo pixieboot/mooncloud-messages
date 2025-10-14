@@ -2,22 +2,25 @@ import "dotenv/config";
 import "ejs";
 // import fs from "fs";
 import express, { Application, Request, Response, NextFunction } from "express";
+import { fileURLToPath } from 'url';
 import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import cookieParser from "cookie-parser";
 import expressLayouts from "express-ejs-layouts";
 import expressSession, { Session } from "express-session";
 import bodyParser from "body-parser";
 import createError from "http-errors";
 import debugLib from "debug";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import http from "http";
 import morgan from "morgan";
 import passport, { session } from "passport";
-import indexRouter from "./routes/index";
-import "./strategies/local.strategy";
-import "./strategies/discord.strategy";
+import indexRouter from "./routes/index.js";
+import "./strategies/local.strategy.js";
+import "./strategies/discord.strategy.js";
 import mongoStore from "connect-mongo";
-import { Database } from "./database/mongodb.database";
+import { Database } from "./database/mongodb.database.js";
 // import mongoose from "mongoose";
 import flash from "express-flash";
 import methodOverride from "method-override";
@@ -26,12 +29,13 @@ import { Server } from "socket.io";
 import "socket.io-client";
 // import { RedisClient } from "./database/redis.database";
 import { instrument } from "@socket.io/admin-ui";
-import { sessions } from "./database/schemas/sessions.schema";
-import { localUserModel } from "./database/schemas/local_user.schema";
-import { ChatController } from "./controllers/chat.controller";
-import { FriendshipController } from "./controllers/friendship.controller";
-import { LocalUsersController } from "./controllers/local_users.controller";
+import { sessions } from "./database/schemas/sessions.schema.js";
+import { localUserModel } from "./database/schemas/local_user.schema.js";
+import { ChatController } from "./controllers/chat.controller.js";
+import { FriendshipController } from "./controllers/friendship.controller.js";
+import { LocalUsersController } from "./controllers/local_users.controller.js";
 const app: Application = express();
+const db_uri = `mongodb://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:27017`
 
 declare module "express-session" {
     interface SessionData {
@@ -68,23 +72,10 @@ app.use(flash());
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 
-if (!`${process.env.SECRET_KEY}`) {
-    console.error("env SECRET_KEY not defined");
-    process.exit(1);
-} else console.log("env SECRET_KEY found");
-if (!`${process.env.MONGO_URI}`) {
-    console.error("env MONGO_URI not defined");
-    process.exit(1);
-} else console.log("env MONGO_URI found");
-if (!`${process.env.MONGO_DB_NAME}`) {
-    console.error("env MONGO_DB_NAME not defined");
-    process.exit(1);
-} else console.log("env MONGO_DB_NAME found");
-
 // Try connecting the session store 
 let sessionStore;
 try {
-    sessionStore = mongoStore.create({ mongoUrl: `${process.env.MONGO_URI}` });
+    sessionStore = mongoStore.create({ mongoUrl: `${db_uri}` });
     console.log("Session store created");
 } catch (err) {
     console.error("Error creating session store:", err);
@@ -133,15 +124,14 @@ console.log("error handler set");
 // Start Server after db connection
 Database._connect().then(() => startServer()).catch((err) => {
     console.error("Failed to connect to DB:", err);
-    //process.exit(1);
+    process.exit(1);
 });
 
 // Start the server if db connection is established
 function startServer() {
-    let port = normalizePort(`${process.env.PORT}` || '3000');
-    port = 8080;
-    console.log("port set to:", 8080);
-    const domain = 'localhost';
+    const port = normalizePort(`${process.env.PORT}` || '3000');
+    console.log("port set to:", port);
+    const domain = '0.0.0.0';
     console.log("domain set to:", domain);
     // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
@@ -169,7 +159,7 @@ function startServer() {
 
     instrument(io, { auth: false });
 
-     io.use(async (socket, next) => {
+    io.use(async (socket, next) => {
         logger.info(`User connected: ${socket.id}`);
         const sessionID = socket.request.session.id;
         if (sessionID) {
@@ -208,8 +198,11 @@ function startServer() {
             userID: socket.data.userID,
             username: socket.data.username,
         })
-        
+
+        // is this right?
         socket.join(socket.data.username);
+
+        // Register events for the socket
 
         socket.on("load-user-data", async (user) => {
             try {
@@ -495,8 +488,6 @@ function startServer() {
             }
         })
     });
-
-   
 
     server.listen(port, domain, () => logger.info("Server running on port: " + port));
     server.on("error", onError);
