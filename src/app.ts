@@ -57,6 +57,7 @@ declare module "http" {
 // RedisClient._connect();
 
 // Ejs config
+app.use(express.static(path.join(__dirname, "/public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("layout", "layouts/index");
@@ -65,12 +66,11 @@ app.use(expressLayouts);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "/public")));
 app.use("**/assets", express.static(path.join(__dirname, "/public/assets")));
 app.use("**/utils", express.static(path.join(__dirname, "/public/utils")));
-app.use(flash());
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
+app.use(flash());
 
 // Try connecting the session store 
 let sessionStore;
@@ -130,8 +130,10 @@ Database._connect().then(() => startServer()).catch((err) => {
 // Start the server if db connection is established
 function startServer() {
     const port = normalizePort(`${process.env.PORT}` || '3000');
+    // const port = normalizePort('9000');
     console.log("port set to:", port);
     const domain = '0.0.0.0';
+    // const domain = 'localhost';
     console.log("domain set to:", domain);
     // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
@@ -413,7 +415,8 @@ function startServer() {
             let newAvatarName;
             let filteredUserResultAvatarName;
             let userResultAvatarName;
-            let defaultAvatarRegex = /.*\/default\/default_user_avatar.jpg/;
+            // let defaultAvatarRegex = /.*\/default\/default_user_avatar.jpg/;
+            let defaultAvatarRegex = /.*\/assets\/default_user_avatar.jpg/;
             let newAvatarRegex = /(.*)uploads\/(.*)/;
             let defaultAvatarMatch = newAvatar.match(defaultAvatarRegex);
             let newAvatarMatch = newAvatar.match(newAvatarRegex);
