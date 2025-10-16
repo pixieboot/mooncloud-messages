@@ -417,7 +417,7 @@ function startServer() {
             let userResultAvatarName;
             // let defaultAvatarRegex = /.*\/default\/default_user_avatar.jpg/;
             let defaultAvatarRegex = /.*\/assets\/default_user_avatar.jpg/;
-            let newAvatarRegex = /(.*)uploads\/(.*)/;
+            let newAvatarRegex = /(.*)\/assets\/(.*)/;
             let defaultAvatarMatch = newAvatar.match(defaultAvatarRegex);
             let newAvatarMatch = newAvatar.match(newAvatarRegex);
             if (newAvatar.indexOf("--") !== -1) {
