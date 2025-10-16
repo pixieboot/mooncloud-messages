@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { User } from "../classes/user.class.js";
-import { imageUpload } from "../public/utils/multer.util.js";
+// import { imageUpload } from "../public/utils/multer.util.js";
 import { localUserModel } from "../database/schemas/local_user.schema.js";
 import sanitizeHtml from "sanitize-html";
 var router = Router();
 
 router.post(
   "/signup",
-  imageUpload.single("upload_user_avatar"),
+  // imageUpload.single("upload_user_avatar"),
   async (req, res) => {
     const email = sanitizeHtml(req.body.email);
     const password = sanitizeHtml(req.body.password);
