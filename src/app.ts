@@ -1,6 +1,7 @@
 import "dotenv/config";
 import "ejs";
-// import fs from "fs";
+import { writeFile } from 'node:fs';
+import { Buffer } from 'node:buffer';
 import express, { Application, Request, Response, NextFunction } from "express";
 import { fileURLToPath } from 'url';
 import path from "path";
@@ -442,15 +443,16 @@ function startServer() {
                 } else {
                     newAvatarName = date + "--" + newAvatar;
                 }
-                // if (newAvatarBase64Data) {
-                //     const avatarBuffer = Buffer.from(newAvatarBase64Data, 'base64');
-                //     const filePath = path.join(__dirname, "./public/assets/users/uploads/");
-                //     fs.writeFile(filePath + newAvatarName, avatarBuffer, (err) => {
-                //         if (err) {
-                //             console.error("Error saving the image:", err);
-                //         }
-                //     })
-                // }
+                if (newAvatarBase64Data) {
+                    const avatarBuffer = new Uint8Array(Buffer.from(newAvatarBase64Data, 'base64'));
+                    const filePath = path.join(__dirname, "/assets");
+                    writeFile(filePath + newAvatarName, avatarBuffer, (err) => {
+                        if (err) {
+                            console.log("Error saving the image:", err);
+                            console.error("Error saving the image:", err);
+                        }
+                    })
+                }
                 console.log(filteredUserResultAvatarName, filteredOriginalAvatar)
                 if (filteredUserResultAvatarName === filteredOriginalAvatar) {
                     let result = await LocalUsersController.updateLocalUserInfo(user, newUsername, newEmail, newBio, userResultAvatarName);
