@@ -1082,7 +1082,7 @@ function loadUserSettingsData(user) {
             </div>
             <div id="settings_details_right_divider"
                 class="right-divider d-flex justify-content-center align-items-center mx-auto ps-2">
-                <img id="settings_avatar_form_control" class="me-1" src="user-assets/${user.avatar}"
+                <img id="settings_avatar_form_control" class="me-1" src="${user.username}/assets/${user.avatar}"
                     alt="settings-user-avatar" />
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
