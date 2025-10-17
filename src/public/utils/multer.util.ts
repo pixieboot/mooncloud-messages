@@ -15,7 +15,7 @@ export const whiteList = [
 
 const storageEngine = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../assets"));
+    cb(null, path.join(__dirname, "../user/assets"));
   },
   filename: (req: Request, file, cb) => {
     const fileName = slugify(file.originalname, { lower: true });
