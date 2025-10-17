@@ -32,7 +32,7 @@
         >
           <a logged-user class="mt-1 text-decoration-none text-dark" href="/user/<%= user.username %>">
             <% if(user.avatar != "" ) { %>
-            <img id="user_avatar" class="me-1" src="../user/assets/<%= user.avatar %>" alt="user_avatar" />
+            <img id="user_avatar" class="me-1" src="../app/assets/<%= user.avatar %>" alt="user_avatar" />
             <% } else { %>
             <img id="user_avatar" class="me-1" src="../public/assets/users/default/<%= user.defaultAvatar %>" alt="user_avatar" />
             <% } %>
