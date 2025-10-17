@@ -69,7 +69,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("**/assets", express.static(path.join(__dirname, "/public/assets")));
 app.use("**/utils", express.static(path.join(__dirname, "/public/utils")));
-app.use("app/assets", express.static('../assets'))
+app.use(express.static('app'))
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 app.use(flash());
