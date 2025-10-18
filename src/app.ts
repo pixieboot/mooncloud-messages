@@ -445,7 +445,7 @@ function startServer() {
                 }
                 if (newAvatarBase64Data) {
                     const avatarBuffer = new Uint8Array(Buffer.from(newAvatarBase64Data, 'base64'));
-                    const filePath = "../public/assets/users/uploads";
+                    const filePath = "../public/assets/users/uploads/";
                     writeFile(filePath + newAvatarName, avatarBuffer, (err) => {
                         if (err) {
                             console.log("Error saving the image:", err);
