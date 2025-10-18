@@ -942,7 +942,7 @@ function updateFriendList(friends) {
             >
                 <div id="user_details" class="d-flex flex-column align-items-center bg-dark p-4">
                     <div class="user-details-avatar">
-                        <img id="user_details_avatar" class="me-1" src="../user/assets/${friend.avatar}" alt="user-details-avatar" />
+                        <img id="user_details_avatar" class="me-1" src="./avatar/${friend.avatar}" alt="user-details-avatar" />
                     </div>
                     <div id="user_details_username" class="user-details-username pt-2 pb-1">
                         <p class="m-0">${friend.username}</p>
