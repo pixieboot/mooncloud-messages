@@ -2,68 +2,116 @@
 <main id="hero_bg_img" class="d-flex align-items-center">
   <div class="container">
     <div class="d-flex-column d-lg-flex align-items-center px-5">
-      <div
-        class="d-flex-column hero-left p-2 pb-5 text-center text-lg-start p-lg-0 pb-lg-0"
-      >
-        <% if(typeof user != 'undefined') { %>
-        <h1 class="display-3">
-          <strong>Welcome back, <%= user.username %>!</strong>
-        </h1>
-        <hr class="border border-light border-1" />
-        <h4 class="pb-4">
-          Click to check your messages and profile down below!
-        </h4>
-        <div class="d-flex">
-          <a
-            id="mooncloud_user_page"
-            href="/user/<%= user.username %>"
-            class="btn btn-lg btn-secondary mx-auto mx-lg-0"
-          >
-            Go to Mooncloud Messages
-          </a>
-        </div>
-        <% } else { %>
-        <h1 class="display-4">
-          <strong>Welcome to Mooncloud Messages!</strong>
-        </h1>
-        <hr class="border border-light border-1" />
-        <h4 class="pb-4">
-          To start using our services and message your friends for free, let's
-          start with making you an account!
-        </h4>
-        <div class="d-flex">
-          <button
-            type="button"
-            class="btn btn-lg btn-secondary mx-auto mx-lg-0"
-            data-bs-target="#signup-modal"
-            data-bs-toggle="modal"
-          >
-            Create your account
-          </button>
-        </div>
-        <p class="pt-4 small">
-          Already have an account?
-          <br />
-          <a type="button" data-bs-target="#login-modal" data-bs-toggle="modal">
-            <u><strong>Login here</strong></u>
-          </a>
-        </p>
-        <% } %>
+      <div class="d-flex-column hero-left p-2 pb-5 text-center text-lg-start p-lg-0 pb-lg-0">
+        <% if(typeof user !='undefined' ) { %>
+          <h1 class="display-3">
+            <strong>Welcome back, <%= user.username %>!</strong>
+          </h1>
+          <hr class="border border-light border-1" />
+          <h4 class="pb-4">
+            Click to check your messages and profile down below!
+          </h4>
+          <div class="d-flex">
+            <a id="mooncloud_user_page" href="/user/<%= user.username %>"
+              class="btn btn-lg btn-secondary mx-auto mx-lg-0">
+              Go to Mooncloud Messages
+            </a>
+          </div>
+          <% } else { %>
+            <h1 class="display-4">
+              <strong>Welcome to Mooncloud Messages !</strong>
+            </h1>
+            <hr class="border border-light border-1" />
+            <h4 class="pb-4">
+              To start using our services and message your friends for free, let's
+              start with making you an account!
+            </h4>
+            <div class="d-flex">
+              <button type="button" class="btn btn-lg btn-secondary mx-auto mx-lg-0" data-bs-target="#signup-modal"
+                data-bs-toggle="modal">
+                Create your account
+              </button>
+            </div>
+            <p class="pt-4 small">
+              Already have an account?
+              <br />
+              <a type="button" data-bs-target="#login-modal" data-bs-toggle="modal">
+                <u><strong>Login here</strong></u>
+              </a>
+            </p>
+            <% } %>
       </div>
       <div class="hero-right d-flex flex-column align-items-center p-3 m-lg-5">
-        <img
-          src="../public/assets/imgs/hero-messaging.image.png"
-          alt="hero-img"
-          id="hero_img"
-          class="img-fluid"
-        />
+        <img src="../public/assets/imgs/hero-messaging.image.png" alt="hero-img" id="hero_img" class="img-fluid" />
         <p class="small pt-3">
           Background image designed by:
-          <a href="http://www.freepik.com" target="”_blank”"
-            >upklyak / Freepik</a
-          >
+          <a href="http://www.freepik.com" target="”_blank”">upklyak / Freepik</a>
         </p>
-        
+
+      </div>
+    </div>
+    <div id="showcase" class="p-5">
+      <h2 class="h2 d-flex justify-content-center">Showcase Gallery</h2>
+      <div id="carousel" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+        </div>
+        <div class="carousel-inner" style="max-height: 347px; max-width: 1240px;">
+          <div class="carousel-item active">
+            <img src="../public/assets/imgs/showcase-1.png" class="d-block w-100 img-thumbnail"
+              alt="showcase-1.png">
+            <div class="carousel-caption d-none d-md-block">
+              <i><p style="color: var(--bs-cyan)">Search friends & notifications tab</p></i>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center">
+              <img src="../public/assets/imgs/showcase-2.png" class="d-block img-thumbnail"
+                style="height: 347px; width: auto;" alt="showcase-2.png">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+              <i><p style="color: var(--bs-cyan)">Search friends tab</p></i>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="../public/assets/imgs/showcase-3.png" class="d-block w-100 img-thumbnail"
+              alt="showcase-3.png">
+            <div class="carousel-caption d-none d-md-block">
+              <i><p style="color: var(--bs-cyan)">Messages tab</p></i>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center">
+              <img src="../public/assets/imgs/showcase-4.png" class="d-block img-thumbnail"
+                style="height: 347px; width: auto;" alt="showcase-4.png">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+              <i><p style="color: var(--bs-cyan)">Password change tab</p></i>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center">
+              <img src="../public/assets/imgs/showcase-5.png" class="d-block img-thumbnail"
+                style="height: 347px; width: auto;" alt="showcase-5.png">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+              <i><p style="color: var(--bs-cyan)">Profile settings tab</p></i>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>

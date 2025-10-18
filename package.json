@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "node src/app.ts",
+    "dev": "npx tsx src/app.ts",
     "build": "npm-run-all clean && tsc -p . && bash ./scripts/copyDir.script.sh",
     "clean": "rimraf dist",
     "test": "jest"

@@ -506,7 +506,7 @@ function chatsListLoad(chatsData, user, friend, request) {
           return `<div id="friend_list_row" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#tab-chat-with-${user.name}" role="tab" chat="${user.chatID}" friend="${user.name}" loaded="0" aria-selected="false" tabindex="-1">
             <div class="d-flex justify-content-left align-items-center ms-5">
               <div class="user-avatar">
-                <img id="friend_list_row_avatar" class="me-1" src="assets/users/uploads/${user.avatar}" alt="user-row-avatar" />
+                <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
               </div>
               <div class="user-chat px-2 ms-1 my-3 py-md-0">
                 <p id="friend_list_row_username" class="m-0 mb-1 fs-5">${user.name}</p>
@@ -518,7 +518,7 @@ function chatsListLoad(chatsData, user, friend, request) {
           return `<div id="friend_list_row" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#tab-chat-with-${user.name}" role="tab" chat="${user.chatID}" friend="${user.name}" loaded="0" aria-selected="false" tabindex="-1">
             <div class="d-flex justify-content-left align-items-center ms-5">
               <div class="user-avatar">
-                <img id="friend_list_row_avatar" class="me-1" src="assets/users/default/default_user_avatar.jpg" alt="default-user-row-avatar" />
+                <img id="friend_list_row_avatar" class="me-1" src="assets/default_user_avatar.jpg" alt="default-user-row-avatar" />
               </div>
               <div class="user-chat px-2 ms-1 my-3 py-md-0">
                 <p id="friend_list_row_username" class="m-0 mb-1 fs-5">${user.name}</p>
@@ -532,7 +532,7 @@ function chatsListLoad(chatsData, user, friend, request) {
           return `<div id="friend_list_row" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#tab-chat-with-${user.name}" role="tab" chat="${user.chatID}" friend="${user.name}" loaded="0" aria-selected="false" tabindex="-1">
           <div class="d-flex justify-content-left align-items-center ms-5">
             <div class="user-avatar">
-              <img id="friend_list_row_avatar" class="me-1" src="assets/users/uploads/${user.avatar}" alt="user-row-avatar" />
+              <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
             </div>
             <div class="user-chat px-2 ms-1 my-1 py-md-0">
               <p id="friend_list_row_username" class="m-0 mb-1 fs-5">${user.name}</p>
@@ -587,7 +587,7 @@ function chatsListLoad(chatsData, user, friend, request) {
             <div class="separator">
                 <div id="chat_header" class="d-flex align-items-center p-2 px-4 z-3">
                     <div id="header_avatar">
-                        <img id="friend_list_row_avatar" class="me-1" src="assets/users/uploads/${user.avatar}" alt="user-row-avatar" />
+                        <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
                     </div>
                     <p id="header_username" class="m-0 ms-2 fs-5">${user.name}</p>
                 </div>
@@ -753,7 +753,7 @@ function notificationsController(data) {
                       <div class="d-flex flex-column justify-content-center align-items-center">
                           <div class="d-flex align-items-center">
                               <div class="user-avatar">
-                                  <img id="friend_list_row_avatar" class="me-1" src="assets/users/uploads/${user.avatar}" alt="user-row-avatar" />
+                                  <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
                               </div>
                               <div class="user-username ms-2 py-2 py-md-0">
                                   <p id="friend_list_row_username" class="m-0 fs-6"><span class="text-secondary fs-5"><strong>${user.username}</strong></span>  has sent you a friend request</p>
@@ -882,7 +882,7 @@ function updateFriendList(friends) {
           return `<div id="friend_list_row" class="p-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="user-avatar">
-                        <img id="friend_list_row_avatar" class="me-1" src="assets/users/uploads/${friend.avatar}" alt="user-row-avatar" />
+                        <img id="friend_list_row_avatar" class="me-1" src="./avatar/${friend.avatar}" alt="user-row-avatar" />
                     </div>
                     <div class="user-username px-2 me-2 py-2 py-md-0">
                         <p id="friend_list_row_username" class="m-0 fs-5">${friend.username}</p>
@@ -942,7 +942,7 @@ function updateFriendList(friends) {
             >
                 <div id="user_details" class="d-flex flex-column align-items-center bg-dark p-4">
                     <div class="user-details-avatar">
-                        <img id="user_details_avatar" class="me-1" src="assets/users/uploads/${friend.avatar}" alt="user-details-avatar" />
+                        <img id="user_details_avatar" class="me-1" src="./avatar/${friend.avatar}" alt="user-details-avatar" />
                     </div>
                     <div id="user_details_username" class="user-details-username pt-2 pb-1">
                         <p class="m-0">${friend.username}</p>
@@ -1082,7 +1082,7 @@ function loadUserSettingsData(user) {
             </div>
             <div id="settings_details_right_divider"
                 class="right-divider d-flex justify-content-center align-items-center mx-auto ps-2">
-                <img id="settings_avatar_form_control" class="me-1" src="assets/users/uploads/${user.avatar}"
+                <img id="settings_avatar_form_control" class="me-1" src="./avatar/${user.avatar}"
                     alt="settings-user-avatar" />
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"

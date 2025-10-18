@@ -1,6 +1,7 @@
 import "dotenv/config";
 import "ejs";
-// import fs from "fs";
+import { writeFile } from 'node:fs';
+import { Buffer } from 'node:buffer';
 import express, { Application, Request, Response, NextFunction } from "express";
 import { fileURLToPath } from 'url';
 import path from "path";
@@ -57,6 +58,7 @@ declare module "http" {
 // RedisClient._connect();
 
 // Ejs config
+app.use(express.static(path.join(__dirname, "/public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("layout", "layouts/index");
@@ -65,12 +67,12 @@ app.use(expressLayouts);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "/public")));
 app.use("**/assets", express.static(path.join(__dirname, "/public/assets")));
 app.use("**/utils", express.static(path.join(__dirname, "/public/utils")));
-app.use(flash());
+app.use("**/avatar", express.static(path.join(__dirname, "/public/assets/users/uploads")))
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
+app.use(flash());
 
 // Try connecting the session store 
 let sessionStore;
@@ -130,8 +132,10 @@ Database._connect().then(() => startServer()).catch((err) => {
 // Start the server if db connection is established
 function startServer() {
     const port = normalizePort(`${process.env.PORT}` || '3000');
+    // const port = normalizePort('9000');
     console.log("port set to:", port);
     const domain = '0.0.0.0';
+    // const domain = 'localhost';
     console.log("domain set to:", domain);
     // const admin_url = `${process.env.SOCKET_IO_ADMIN_URL}` || "";
 
@@ -414,7 +418,7 @@ function startServer() {
             let filteredUserResultAvatarName;
             let userResultAvatarName;
             let defaultAvatarRegex = /.*\/default\/default_user_avatar.jpg/;
-            let newAvatarRegex = /(.*)uploads\/(.*)/;
+            let newAvatarRegex = /(.*)\/user\/assets\/(.*)/;
             let defaultAvatarMatch = newAvatar.match(defaultAvatarRegex);
             let newAvatarMatch = newAvatar.match(newAvatarRegex);
             if (newAvatar.indexOf("--") !== -1) {
@@ -439,15 +443,16 @@ function startServer() {
                 } else {
                     newAvatarName = date + "--" + newAvatar;
                 }
-                // if (newAvatarBase64Data) {
-                //     const avatarBuffer = Buffer.from(newAvatarBase64Data, 'base64');
-                //     const filePath = path.join(__dirname, "./public/assets/users/uploads/");
-                //     fs.writeFile(filePath + newAvatarName, avatarBuffer, (err) => {
-                //         if (err) {
-                //             console.error("Error saving the image:", err);
-                //         }
-                //     })
-                // }
+                if (newAvatarBase64Data) {
+                    const avatarBuffer = new Uint8Array(Buffer.from(newAvatarBase64Data, 'base64'));
+                    const filePath = "/app/dist/public/assets/users/uploads/";
+                    writeFile(filePath + newAvatarName, avatarBuffer, (err) => {
+                        if (err) {
+                            console.log("Error saving the image:", err);
+                            console.error("Error saving the image:", err);
+                        }
+                    })
+                }
                 console.log(filteredUserResultAvatarName, filteredOriginalAvatar)
                 if (filteredUserResultAvatarName === filteredOriginalAvatar) {
                     let result = await LocalUsersController.updateLocalUserInfo(user, newUsername, newEmail, newBio, userResultAvatarName);
