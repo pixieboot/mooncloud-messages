@@ -506,7 +506,7 @@ function chatsListLoad(chatsData, user, friend, request) {
           return `<div id="friend_list_row" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#tab-chat-with-${user.name}" role="tab" chat="${user.chatID}" friend="${user.name}" loaded="0" aria-selected="false" tabindex="-1">
             <div class="d-flex justify-content-left align-items-center ms-5">
               <div class="user-avatar">
-                <img id="friend_list_row_avatar" class="me-1" src="../user/assets/${user.avatar}" alt="user-row-avatar" />
+                <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
               </div>
               <div class="user-chat px-2 ms-1 my-3 py-md-0">
                 <p id="friend_list_row_username" class="m-0 mb-1 fs-5">${user.name}</p>
@@ -532,7 +532,7 @@ function chatsListLoad(chatsData, user, friend, request) {
           return `<div id="friend_list_row" class="list-group-item list-group-item-action" data-bs-toggle="list" href="#tab-chat-with-${user.name}" role="tab" chat="${user.chatID}" friend="${user.name}" loaded="0" aria-selected="false" tabindex="-1">
           <div class="d-flex justify-content-left align-items-center ms-5">
             <div class="user-avatar">
-              <img id="friend_list_row_avatar" class="me-1" src="../user/assets/${user.avatar}" alt="user-row-avatar" />
+              <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
             </div>
             <div class="user-chat px-2 ms-1 my-1 py-md-0">
               <p id="friend_list_row_username" class="m-0 mb-1 fs-5">${user.name}</p>
@@ -587,7 +587,7 @@ function chatsListLoad(chatsData, user, friend, request) {
             <div class="separator">
                 <div id="chat_header" class="d-flex align-items-center p-2 px-4 z-3">
                     <div id="header_avatar">
-                        <img id="friend_list_row_avatar" class="me-1" src="../user/assets/${user.avatar}" alt="user-row-avatar" />
+                        <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
                     </div>
                     <p id="header_username" class="m-0 ms-2 fs-5">${user.name}</p>
                 </div>
@@ -753,7 +753,7 @@ function notificationsController(data) {
                       <div class="d-flex flex-column justify-content-center align-items-center">
                           <div class="d-flex align-items-center">
                               <div class="user-avatar">
-                                  <img id="friend_list_row_avatar" class="me-1" src="../user/assets/${user.avatar}" alt="user-row-avatar" />
+                                  <img id="friend_list_row_avatar" class="me-1" src="./avatar/${user.avatar}" alt="user-row-avatar" />
                               </div>
                               <div class="user-username ms-2 py-2 py-md-0">
                                   <p id="friend_list_row_username" class="m-0 fs-6"><span class="text-secondary fs-5"><strong>${user.username}</strong></span>  has sent you a friend request</p>
@@ -1080,16 +1080,6 @@ function loadUserSettingsData(user) {
                 </div>
                 <span id="settings_email_notification" class="text-warning ms-1"></span>
             </div>
-            <img id="settings_avatar_form_control" class="me-1" src="../avatar/${user.avatar}"
-                    alt="settings-user-avatar" />
-                    <img id="settings_avatar_form_control" class="me-1" src="./assets/avatar/${user.avatar}"
-                    alt="settings-user-avatar" />
-                    <img id="settings_avatar_form_control" class="me-1" src="../assets/avatar/${user.avatar}"
-                    alt="settings-user-avatar" />
-                    <img id="settings_avatar_form_control" class="me-1" src="./app/assets/avatar/${user.avatar}"
-                    alt="settings-user-avatar" />
-                    <img id="settings_avatar_form_control" class="me-1" src="../app/assets/avatar/${user.avatar}"
-                    alt="settings-user-avatar" />
             <div id="settings_details_right_divider"
                 class="right-divider d-flex justify-content-center align-items-center mx-auto ps-2">
                 <img id="settings_avatar_form_control" class="me-1" src="./avatar/${user.avatar}"
